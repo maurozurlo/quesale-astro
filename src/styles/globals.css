@@ -1,0 +1,66 @@
+html,
+body {
+  padding: 0;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  font-size: 14px;
+  line-height: 1.5715;
+  background-color: var(--soft-background);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+:root{
+  --primary-color: #4e1d11;
+  --primary-color-background: white;
+  --soft-background: #d9d9d9;
+  --primary-color-text: #000;
+  --primary-color-border: #d9d9d9;
+  --secondary-color-text: white;
+
+  --box-shadow: 0px 1px 9px 0px #0000001c;
+  --border-radius-sm: 2px;
+
+
+  --spacing-8: 8em;
+  --spacing-7: 4em;
+  --spacing-6: 2em;
+  --spacing-5: 1.5em;
+  --spacing-4: 1em;
+  --spacing-3: 0.75em;
+  --spacing-2: 0.5em;
+  --spacing-1: 0.25em;
+  --spacing-0: 0;
+}
+
+.container{
+  max-width: 1440px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+input[type=text], input[type=password] {
+  color: var(--primary-color-text);
+  background-color: var(--primary-color-background);
+  border: 1px solid var(--primary-color-border);
+  border-radius: var(--border-radius-sm);
+  width: 100%;
+  margin-bottom: var(--spacing-0);
+  border-radius: var(--border-radius-sm) 0 0 var(--border-radius-sm);
+  height: 100%;
+  min-height: 32px;
+  padding: var(--spacing-0) var(--spacing-4);
+}
+
+label{
+  line-height: 1;
+  font-weight: 600;
+}
+

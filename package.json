@@ -7,9 +7,24 @@
     "start": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "lint:scss": "stylelint \"src/**/*.{astro,scss,svelte}\""
   },
   "dependencies": {
-    "astro": "^2.7.2"
+    "@astrojs/react": "^2.2.1",
+    "@types/react": "^18.2.14",
+    "@types/react-dom": "^18.2.6",
+    "astro": "^2.7.2",
+    "astro-icon": "^0.8.1",
+    "classnames": "^2.3.2",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "postcss-html": "^1.5.0",
+    "sass": "^1.63.6",
+    "stylelint": "^15.10.1",
+    "stylelint-config-recommended-scss": "^12.0.0",
+    "stylelint-config-standard": "^34.0.0"
   }
 }

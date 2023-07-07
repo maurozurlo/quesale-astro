@@ -1,0 +1,58 @@
+[
+    {
+        "coverImage": "/demo_1.jpg",
+        "title": "EL CIRCUITO ESPACIO ESCENICO",
+        "date": "JUE · MAY 5 · 7:30 PM",
+        "location": "Sarmiento 3096",
+        "slug": 2
+    },
+    {
+        "coverImage": "/demo_5.jpg",
+        "title": "Feria del libro",
+        "date": "JUE · MAY 5 · 5:00 PM",
+        "location": "Orlando, FL · Hard Rock Live Orlando",
+        "slug": 3
+    },
+    {
+        "coverImage": "/demo_3.jpg",
+        "title": "Que Open Mic De Miercoles",
+        "date": "VIE · OCT 28 · 7:30 PM",
+        "location": "Av. Del congreso 3834 entre Estomba y Naon",
+        "slug": 4
+    },
+    {
+        "coverImage": "/demo_4.jpg",
+        "title": "Make Art Not War",
+        "date": "FRI · OCT 28 · 7:30 PM",
+        "location": "Orlando, FL · Hard Rock Live Orlando",
+        "slug": 5
+    },
+    {
+        "coverImage": "/demo_2.jpg",
+        "title": "Daniel Howell: We're All Doomed!",
+        "date": "FRI · OCT 28 · 7:30 PM",
+        "location": "Orlando, FL · Hard Rock Live Orlando",
+        "slug": 6
+    },
+    {
+        "coverImage": "/demo_6.jpg",
+        "title": "Daniel Howell: We're All Doomed!",
+        "date": "FRI · OCT 28 · 7:30 PM",
+        "location": "Orlando, FL · Hard Rock Live Orlando",
+        "slug": 7
+    },
+    {
+        "coverImage": "/demo_8.jpg",
+        "title": "Daniel Howell: We're All Doomed!",
+        "date": "FRI · OCT 28 · 7:30 PM",
+        "location": "Orlando, FL · Hard Rock Live Orlando",
+        "slug": 9
+    },
+    {
+        "coverImage": "/demo_7.jpg",
+        "title": "Daniel Howell: We're All Doomed!",
+        "date": "FRI · OCT 28 · 7:30 PM",
+        "location": "Orlando, FL · Hard Rock Live Orlando",
+        "slug": 8
+    }
+]

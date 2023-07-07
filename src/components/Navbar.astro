@@ -1,0 +1,23 @@
+---
+import { Icon } from "astro-icon";
+import logo from "/logo.svg";
+import "./Navbar.scss";
+import Login from '../modals/Login';
+
+---
+
+<header class="nav-header">
+  <a href="/"><img alt={logo} src={logo} class="logo" /></a>
+
+  <div class="nav-search-input">
+    <input type="text" placeholder="Buscar eventos..." class="search-input" />
+    <span class="nav-search-input-addon">
+      <button>
+        <Icon name="search" />
+      </button>
+    </span>
+  </div>
+  <div class="nav-right-menu">
+    <Login client:load />    
+  </div>
+</header>

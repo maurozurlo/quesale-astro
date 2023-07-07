@@ -1,0 +1,25 @@
+.image-gallery {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 0;
+  }
+
+  .image-gallery::after {
+    content: "";
+    flex-grow: 999;
+  }
+  
+  .image-gallery > li {
+    flex: 1 1 auto; /* or flex: auto; */
+    position: relative;
+    list-style: none;
+  }
+  
+  .image-gallery li img {
+    object-fit: contain;
+    width: 100%;
+    max-height: 350px;
+    vertical-align: middle;
+    border-radius: 5px;
+  }

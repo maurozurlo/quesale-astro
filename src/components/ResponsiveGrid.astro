@@ -1,0 +1,15 @@
+---
+import starters from '../../public/events.json';
+import './ResponsiveGrid.scss'
+import Card from './Card.astro'
+---
+
+<div class="container">
+    <!-- heading text -->
+    <ul class="image-gallery">
+        {starters.map((starter) => (
+            <Card {...starter} />
+        ))}
+      <!-- other items here -->
+    </ul>
+  </div>

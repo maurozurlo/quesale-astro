@@ -1,0 +1,35 @@
+.primary-button {
+    margin: var(--spacing-0);
+    font-weight: 400;
+    border: 1px solid var(--primary-color);
+    cursor: pointer;
+    transition: all 0.15s cubic-bezier(0.645, 0.045, 0.355, 1);
+    height: 32px;
+    padding: var(--spacing-2) var(--spacing-4);
+    border-radius: var(--border-radius-sm);
+    outline: 0;
+    color: var(--secondary-color-text);
+    background: var(--primary-color);
+
+    &:hover {
+        filter: brightness(1.2);
+    }
+}
+
+.outline-button{
+    margin: var(--spacing-0);
+    font-weight: 400;
+    border: 1px solid var(--primary-color-text);
+    cursor: pointer;
+    transition: all 0.15s cubic-bezier(0.645, 0.045, 0.355, 1);
+    height: 32px;
+    padding: var(--spacing-2) var(--spacing-4);
+    border-radius: var(--border-radius-sm);
+    outline: 0;
+    color: var(--primary-color-text);
+    background: transparent;
+
+    &:hover {
+        background: var(--secondary-color-text);
+    }
+}

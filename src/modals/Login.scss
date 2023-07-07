@@ -1,0 +1,88 @@
+/* The Modal (background) */
+.modal {
+    display: block;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: none;
+    background-color: rgb(0, 0, 0);
+    background-color: rgba(0, 0, 0, 0.4);
+    padding-top: var(--spacing-6);
+}
+
+/* Modal Content/Box */
+.modal-content {
+    background-color: #fefefe;
+    margin: 5% auto 15% auto;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 400px;
+    display: flex;
+    flex-direction: column;
+
+    .modal-header {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        padding: 0 var(--spacing-6);
+
+        .close-modal {
+            font-size: 24px;
+            cursor: pointer;
+        }
+    }
+
+    .avatar {
+        margin: 0 auto;
+        max-width: 50%;
+        border-radius: 50%;
+    }
+
+    .form-group {
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        padding: var(--spacing-4) var(--spacing-6);
+        gap: var(--spacing-4);
+
+        .checkbox{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    }
+
+    .align-left{
+        width: 100%;
+        display: flex;
+        flex-direction: row-reverse;
+    }
+
+    .modal-footer{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: var(--soft-background);
+        padding: 0 var(--spacing-6);
+    }
+    
+
+}
+
+/* Add Zoom Animation */
+.animate {
+    animation: animatezoom 0.6s
+}
+
+@keyframes animatezoom {
+    from {
+        transform: translateY(-1200px);
+    }
+
+    to {
+        transform: translateY(0)
+    }
+}

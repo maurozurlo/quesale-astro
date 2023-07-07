@@ -1,0 +1,39 @@
+.additional {
+    width: 100%;
+    justify-content: space-between;
+    display: flex;
+  }
+  
+  .quantity {
+    font-weight: bold;
+  }
+
+  .card{
+    background-color: var(--primary-color-background);
+    padding: var(--spacing-5);
+    display: flex;
+    flex-direction: column;
+
+    img{
+        margin-bottom: var(--spacing-3);
+    }
+    
+    h3{
+        overflow-wrap: break-word;
+        color: rgba(0, 0, 0, 0.85);
+        font-weight: 600;
+        font-size: 24px;
+        margin: 0px;
+        line-height: 1;
+    }
+
+    .date{
+        overflow-wrap: break-word;
+        color: #52c41a;
+        
+    }
+
+    .location{
+        color: rgba(0, 0, 0, 0.45);
+    }
+  }

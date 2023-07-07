@@ -1,0 +1,71 @@
+:root {
+  --primary-color-text: #333;
+  --primary-color-background: #fff;
+  --primary-color-border: #ddd;
+  --primary-color: #4e1d11;
+  --secondary-color-text: #fff;
+  --box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+
+}
+
+.nav-header {
+  color: var(--primary-color-text);
+  line-height: 64px;
+  background: var(--primary-color-background);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  > a>img.logo {
+    display: block;
+    width: 150px;
+  }
+  padding: var(--spacing-0) var(--spacing-6);
+  box-shadow: var(--box-shadow);
+}
+
+.nav-search-input {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 350px;
+  height: 32px;
+  width: 300px;
+  > input {
+    color: var(--primary-color-text);
+    background-color: var(--primary-color-background);
+    border: 1px solid var(--primary-color-border);
+    border-radius: var(--border-radius-sm);
+    width: 100%;
+    margin-bottom: var(--spacing-0);
+    border-radius: var(--border-radius-sm) 0 0 var(--border-radius-sm);
+    height: 100%;
+    padding: var(--spacing-0) var(--spacing-4);
+  }
+
+  .nav-search-input-addon {
+    color: var(--primary-color-text);
+    background-color: var(--primary-color-background);
+    transition: all 0.3s;
+    padding: var(--spacing-0);
+    border: 0;
+    height: 100%;
+    > button {
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+      padding: var(--spacing-2) var(--spacing-4);
+      border-color: var(--primary-color);
+      background: var(--primary-color);
+      border-radius: 0 var(--border-radius-sm) var(--border-radius-sm) 0;
+      height: 100%;
+      border: none;
+      > svg {
+        fill: var(--secondary-color-text);
+        width: 16px;
+      }
+    }
+  }
+}
