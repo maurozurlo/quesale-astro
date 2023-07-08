@@ -4,12 +4,11 @@ import './ResponsiveGrid.scss'
 import Card from './Card.astro'
 ---
 
-<div class="container">
+
     <!-- heading text -->
-    <ul class="image-gallery">
+    <ul class="image-gallery mt-4">
         {starters.map((starter) => (
             <Card {...starter} />
         ))}
       <!-- other items here -->
     </ul>
-  </div>

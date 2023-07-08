@@ -33,3 +33,17 @@
         background: var(--secondary-color-text);
     }
 }
+
+.facebook-button{
+    @extend .primary-button;
+    background-color: #3b5998;
+}
+
+.google-button{
+    @extend .primary-button;
+    background-color: #DB4437;
+
+    &:hover {
+        filter: brightness(1.1);
+    }
+}
