@@ -1,4 +1,5 @@
 ---
+import classNames from "classnames";
 import { getRandomInt } from "../utils/math";
 import "./Card.scss";
 import Pill from './atoms/Pill.astro'
@@ -19,17 +20,17 @@ function getCategories() {
   return selected;
 }
 
-const { coverImage, title, location, date } = Astro.props;
+const { coverImage, title, location, date, isSmall } = Astro.props;
 ---
 
-<li class="card">
+<li class={classNames({card:true, isSmall})}>
     <img alt={title} src={coverImage} />
     
       <div class="date">{date}</div>
       <h3>{title}</h3>
       <div class="location">{location}</div>
 
-      <div>
+      <div class="pill-container">
         {getCategories().map(category => <Pill label={category.label} color={category.color}/>)}
       </div>    
 </li>

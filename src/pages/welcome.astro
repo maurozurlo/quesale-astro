@@ -1,0 +1,18 @@
+---
+import MainSite from "../layouts/MainSite.astro";
+import EventList from "../components/particles/EventList.astro";
+import starters from '../../public/events.json';
+---
+
+<MainSite>
+    <div class="container is-primary-background">
+        <h1 class="is-size-2 has-text-weight-semibold">Bienvenidx!</h1>
+        <p class="my-2">Nos pone re contentos que te sumes a disfrutar de la música, el teatro y un montón de experiencias culturales únicas.
+            <br/> En Que Sale?, vas a encontrar una banda de eventos piolas que están por hacerse en la zona, con artistas del under, hardcore gay antifascista.</p>
+
+        <div>
+            <h4 class="is-size-4 has-text-weight-semibold">Eventos cerca tuyo</h4>
+            <EventList events={starters} orientation="horizontal" />
+        </div>
+    </div>
+</MainSite>

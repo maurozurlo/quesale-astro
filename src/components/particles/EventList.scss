@@ -1,0 +1,10 @@
+.event-container {
+    display: flex;
+    overflow-x: scroll;
+    gap: var(--spacing-4);
+    padding: var(--spacing-5) var(--spacing-4);
+}
+
+.event-card{
+    min-width: 300px;
+}
