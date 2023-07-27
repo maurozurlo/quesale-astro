@@ -1,106 +1,114 @@
 ---
 import { USER_MAX_LINKS } from "../../constants/user";
-
 ---
 
 <div class="form-group">
-    <label>Links</label>
-    <small
-        >Podes agregar hasta {USER_MAX_LINKS} links de tus redes
-        sociales o proyectos</small
-    >
+  <label>Links</label>
+  <small
+    >Podes agregar hasta {USER_MAX_LINKS} links de tus redes sociales o proyectos</small
+  >
 
-    <div class="list" id="link-list"></div>
+  <div class="list" id="link-list"></div>
 
-    <div class="is-flex">
-        <div class="is-halfwidth">
-            <input
-                type="text"
-                placeholder="Nombre del link"
-                name="link-name"
-            />
-        </div>
-        <div class="is-halfwidth">
-            <input
-            class="ml-2"
-                type="text"
-                placeholder="Link"
-                name="link-src"
-            />
-        </div>
+  <div class="is-flex">
+    <div class="is-halfwidth">
+      <input type="text" placeholder="Nombre del link" name="link-name" />
     </div>
-    <button
-        type="button"
-        class="primary-button"
-        id="add-link">Agregar</button
-    >
+    <div class="is-halfwidth">
+      <input
+        class="ml-2"
+        type="text"
+        placeholder="La url del link"
+        name="link-src"
+      />
+    </div>
+  </div>
+  <button type="button" class="primary-button" id="add-link">Agregar</button>
 </div>
 
-
 <template id="list-item">
-    <div class="list-item">
-        <div class="list-item-content">
-            <div class="list-item-title"></div>
-            <div
-                class="list-item-description is-flex is-justify-content-space-between"
-            >
-                <a></a>
-                <button class="outline-button add-small">&times;</button>
-            </div>
-        </div>
+  <div class="list-item">
+    <div class="list-item-content">
+      <div class="list-item-title"></div>
+      <div
+        class="list-item-description is-flex is-justify-content-space-between"
+      >
+        <a></a>
+        <button class="outline-button add-small">&times;</button>
+      </div>
     </div>
+  </div>
 </template>
 
 <script>
-    import { USER_MAX_LINKS } from "../../constants/user";
-    import {createValidator} from '../../helpers/validators'
-    let currentUserLinks = 0;
+  import { USER_MAX_LINKS } from "../../constants/user";
+  import {
+    InputValidator,
+    CheckFormValidity,
+  } from "../../helpers/inputvalidator";
+  let currentUserLinks = 0;
 
-    const linkName = document.querySelector(
+  document.querySelector("#add-link").addEventListener("click", () => {
+    if (USER_MAX_LINKS === currentUserLinks) return;
+    const linkSrcValidator = new InputValidator('[name="link-src"]', [
+      { key: "empty" },
+      { key: "url" },
+    ]);
+    const linkNameValidator = new InputValidator('[name="link-name"]', [
+      { key: "empty" },
+    ]);
+
+    if (!CheckFormValidity([linkNameValidator, linkSrcValidator])) return;
+
+    if ("content" in document.createElement("template")) {
+      currentUserLinks++;
+
+      const linkName = document.querySelector(
         '[name="link-name"]'
-    ) as HTMLInputElement;
-    const linkSrc = document.querySelector(
+      ) as HTMLInputElement;
+      const linkSrc = document.querySelector(
         '[name="link-src"]'
-    ) as HTMLInputElement;
+      ) as HTMLInputElement;
 
-    document.querySelector("#add-link").addEventListener("click", () => {
-        if (USER_MAX_LINKS === currentUserLinks) return;
-        const linkSrcValidator = createValidator(linkSrc, ['empty', 'url'])
-        const linkNameValidator = createValidator(linkName, ['empty'])
-        
-        if(!linkNameValidator || !linkSrcValidator) return;
+      const list = document.querySelector("#link-list");
+      const template = document.querySelector(
+        "#list-item"
+      ) as HTMLTemplateElement;
+      const clone = template.content.firstElementChild.cloneNode(
+        true
+      ) as HTMLElement;
 
-        if ("content" in document.createElement("template")) {
-            currentUserLinks++;
+      const title = clone.querySelector(".list-item-title");
+      const link = clone.querySelector("a");
 
-            const list = document.querySelector("#link-list");
-            const template = document.querySelector(
-                "#list-item"
-            ) as HTMLTemplateElement;
-            const clone = template.content.firstElementChild.cloneNode(
-                true
-            ) as HTMLElement;
-            const title = clone.querySelector(".list-item-title");
-            const link = clone.querySelector("a");
+      const getLinkValue = ({ value }) => {
+        return value.startsWith("http://") || value.startsWith("https://")
+          ? value
+          : "https://".concat(value);
+      };
+      const linkValue = getLinkValue(linkSrc);
 
-            title.textContent = linkName.value;
-            link.textContent = linkSrc.value;
-            link.setAttribute("href", linkSrc.value);
-            const nodeId = "list-item-".concat(btoa(linkSrc.value));
-            clone.id = nodeId;
-            clone
-                .querySelector("button")
-                .addEventListener("click", () =>
-                    document.getElementById(nodeId).remove()
-                );
+      title.textContent = linkName.value;
+      link.textContent = linkValue;
+      link.setAttribute("href", linkValue);
+      const nodeId = "list-item-".concat(btoa(linkValue));
+      clone.id = nodeId;
+      clone.setAttribute("data-link", encodeURI(linkName.value));
+      clone.setAttribute("data-link-src", encodeURI(linkValue));
 
-            list.appendChild(clone);
+      clone
+        .querySelector("button")
+        .addEventListener("click", () =>
+          document.getElementById(nodeId).remove()
+        );
 
-            linkName.value = "";
-            linkSrc.value = "";
-        } else {
-            // Find another way to add the rows to the table because
-            // the HTML template element is not supported.
-        }
-    });
+      list.appendChild(clone);
+
+      linkName.value = "";
+      linkSrc.value = "";
+    } else {
+      // Find another way to add the rows to the table because
+      // the HTML template element is not supported.
+    }
+  });
 </script>

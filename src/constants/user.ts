@@ -1,3 +1,22 @@
+export const USER_GENDER = [
+    {
+        key: "M",
+        label: "Masculino"
+    },
+    {
+        key: "F",
+        label: "Femenino"
+    },
+    {
+        key: "NB",
+        label: "No binarie"
+    },
+    {
+        key: "NS",
+        label: "Prefiero no decir"
+    }
+]
+
 export const USER_CATEGORIES = [
     {
         label: "Arte Plastico",

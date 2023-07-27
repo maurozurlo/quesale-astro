@@ -2,7 +2,7 @@
 import MainSite from "../layouts/MainSite.astro";
 import "../styles/signup.scss";
 import UserLinks from "../components/particles/UserLinksEditor.astro";
-import { USER_CATEGORIES } from "../constants/user";
+import { USER_CATEGORIES, USER_GENDER } from "../constants/user";
 ---
 
 <MainSite>
@@ -39,15 +39,20 @@ import { USER_CATEGORIES } from "../constants/user";
 
               <label for="genero">Genero</label>
               <select name="gender">
-                <option value="0" selected>Masculino</option>
-                <option value="1">Femenino</option>
-                <option value="2">No binarie</option>
-                <option value="3">Prefiero no decir</option>
+                {
+                  USER_GENDER.map((gender, idx) => {
+                    return (
+                      <option value={gender.key} selected={idx === 0}>
+                        {gender.label}
+                      </option>
+                    );
+                  })
+                }
               </select>
 
               <label for="categories">Categorias</label>
               <small>Elegí las que más representan tu perfi:</small>
-              <div class="categories-container">
+              <div class="categories-container" id="categories-container">
                 {
                   USER_CATEGORIES.map((category) => {
                     return (
@@ -69,39 +74,53 @@ import { USER_CATEGORIES } from "../constants/user";
     </form>
     <div class="signup-footer mt-4">
       <span></span>
-      <a class="primary-button" id="save-user-data" href="/welcome">Guardar</a>
+      <button class="primary-button" id="save-user-data">Guardar</button>
     </div>
   </div>
 </MainSite>
 
 <script>
-  import { createValidator } from "../helpers/validators";
-
+  import { InputValidator, CheckFormValidity } from "../helpers/inputvalidator";
   document.getElementById("save-user-data").addEventListener("click", () => {
-    const form = document.querySelector("#user-data");
-    const nameValidator = createValidator(
-      document.querySelector('[name="name"]') as HTMLInputElement,
-      ["empty"]
-    );
+    const form = document.querySelector("#user-data") as HTMLFormElement;
 
-    const ageEl = document.querySelector('[name="name"]') as HTMLInputElement;
-    const ageValidator = ageEl.checkValidity();
+    // Validators
+    const NameValidator = new InputValidator('[name="name"]', [
+      { key: "empty" },
+    ]);
+    const AgeValidator = new InputValidator('[name="age"]', [
+      { key: "empty" },
+      { key: "numberHigherThan", params: [18] },
+    ]);
+    const CategoriesValidator = new InputValidator("#categories-container", [
+      {
+        key: "oneOptionSelected",
+      },
+    ]);
+    const isFormValid = CheckFormValidity([
+      NameValidator,
+      AgeValidator,
+      CategoriesValidator,
+    ]);
 
-    // Categories
-    const categories = Array.from(
-      form.querySelectorAll('[type="checkbox"]')
-    ) as HTMLInputElement[];
-    categories.map(({ name, checked }) => ({ name, checked }));
+    if (isFormValid) {
+      // Grab data
+      const formData = new FormData(form);
+      const { name, age, gender } = Object.fromEntries(formData);
+      const links = Array.from(document.querySelectorAll("[data-link]")).map(
+        (link) => ({
+          name: decodeURI(link.getAttribute("data-link")),
+          url: decodeURI(link.getAttribute("data-link-src")),
+        })
+      );
 
-    const checkCategories = categories.some(({ checked }) => checked);
+      const categories = Array.from(
+        form.querySelectorAll<HTMLInputElement>('[type="checkbox"]')
+      )
+        .map(({ name, checked }) => checked && { name })
+        .filter(Boolean);
 
-    const allChecks = [nameValidator, ageValidator, checkCategories].every(
-      (value) => value
-    );
-    if (allChecks) {
-      //Hit server or some shit
-    } else {
-      ageEl.reportValidity();
+      console.log({ name, age, gender, links, categories });
     }
   });
 </script>

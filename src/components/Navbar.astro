@@ -19,6 +19,6 @@ const userIsLoggedIn = false;
     </span>
   </div>
   <div class="nav-right-menu">
-    {userIsLoggedIn ? <UserMenu client:load /> : <Login client:load />}
+    {userIsLoggedIn ? <UserMenu/> : <Login client:load />}
   </div>
 </header>

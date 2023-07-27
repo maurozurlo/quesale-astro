@@ -1,63 +1,75 @@
-import { EMAIL_REGEX, URL_REGEX } from '../constants/regex'
+import { EMAIL_REGEX, LOOSER_URL_REGEX } from '../constants/regex';
 
-export const emptyValidator = (value?: string) => ({ key: 'empty', isValid: value !== '', error: 'El campo no puede estar vacio' })
-export const urlValidator = (value?: string) => ({ key: 'url', isValid: value && value.match(URL_REGEX), error: 'El valor no parece ser una url valida' })
-export const emailValidator = (value?: string) => ({ key: 'email', isValid: value && value.match(EMAIL_REGEX), error: 'El valor no parece ser un email valido' })
+export type ValidatorKey = 'empty' | 'url' | 'email' | 'numberHigherThan' | 'oneOptionSelected';
 
+export interface ValidatorResult {
+    key: ValidatorKey;
+    isValid: boolean;
+    error: string;
+}
 
-const getValidator = (key: string) => {
-    switch (key) {
-        case 'empty':
-            return emptyValidator;
-        case 'url':
-            return urlValidator;
-        case 'email':
-            return emailValidator;
+function createValidatorResult(
+    key: ValidatorKey,
+    isValid: boolean,
+    error: string
+): ValidatorResult {
+    return { key, isValid, error };
+}
+
+function emptyValidator({ value }): ValidatorResult {
+    return createValidatorResult(
+        'empty',
+        value !== '',
+        'El campo no puede estar vacio'
+    );
+}
+
+function urlValidator({ value }): ValidatorResult {
+    return createValidatorResult(
+        'url',
+        value !== undefined && LOOSER_URL_REGEX.test(value),
+        'El valor no parece ser una url valida'
+    );
+}
+
+function emailValidator({ value }): ValidatorResult {
+    return createValidatorResult(
+        'email',
+        value !== undefined && EMAIL_REGEX.test(value),
+        'El valor no parece ser un email valido'
+    );
+}
+
+function numberHigherThan({ value, params }): ValidatorResult {
+    if (!params || params.length === 0) {
+        throw new Error('NumberHigherThan validator requires parameters');
     }
+    return createValidatorResult(
+        'numberHigherThan',
+        params.every((param: number) => Number(value) >= param),
+        'Por favor selecciona un numero valido'
+    );
 }
 
-export type Validator = 'empty' | 'url' | 'email';
+function oneOptionSelected({ input }) {
+    const categories = Array.from(
+        input.querySelectorAll('[type="checkbox"]')
+    ) as HTMLInputElement[];
+    categories.map(({ name, checked }) => ({ name, checked }));
 
-type ValidatorResult = { key: string; isValid: boolean; error: string; }
-
-const getValidatorId = (inputName: string, validatorKey: string) => inputName.concat('-', validatorKey, '-validator');
-
-function removeAllValidators(inputName: string, validatorList: ValidatorResult[]) {
-    validatorList.forEach(validatorResult => {
-        const validator = document.getElementById(getValidatorId(inputName, validatorResult.key));
-        if(validator) validator.remove();
-    })
+    return createValidatorResult(
+        'oneOptionSelected',
+        categories.some(({ checked }) => checked),
+        'Por favor selecciona una opcion'
+    );
 }
 
-export function createValidator(inputElement: HTMLInputElement, validatorList: Validator[]) {
-    const inputName = inputElement.name;
-    const validatorResults = []
-
-    function validate(){
-        const { value } = inputElement;
-        validatorList.forEach(val => {
-            const validator = getValidator(val);
-            const validatorResult = validator(value);
-            validatorResults.push(validatorResult);
-            const validatorElement = document.getElementById(getValidatorId(inputName, validatorResult.key));
-
-
-            if (!validatorResult.isValid && !validatorElement) {
-                const validatorEl = document.createElement('small');
-                validatorEl.classList.add('has-text-danger');
-                validatorEl.id = getValidatorId(inputName, validatorResult.key);
-                validatorEl.innerHTML = `- ${validatorResult.error}<br />`;
-                inputElement.after(validatorEl);
-            }
-        })
-
-        const isValidGlobal = validatorResults.every(result => result.isValid)
-        if (isValidGlobal) {
-            removeAllValidators(inputName, validatorResults);
-        }
-
-        return isValidGlobal;
-    }
-    
-    return validate()
-}
+export const validators: {
+    [key in ValidatorKey]: ({ value, params, input }) => ValidatorResult;
+} = {
+    empty: emptyValidator,
+    url: urlValidator,
+    email: emailValidator,
+    numberHigherThan: numberHigherThan,
+    oneOptionSelected: oneOptionSelected
+};
