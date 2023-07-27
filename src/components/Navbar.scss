@@ -1,17 +1,6 @@
-:root {
-  --primary-color-text: #333;
-  --primary-color-background: #fff;
-  --primary-color-border: #ddd;
-  --primary-color: #4e1d11;
-  --secondary-color-text: #fff;
-  --box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-
-
-}
-
 .nav-header {
+  height: 48px;
   color: var(--primary-color-text);
-  line-height: 64px;
   background: var(--primary-color-background);
   display: flex;
   align-items: center;
@@ -22,6 +11,11 @@
   }
   padding: var(--spacing-0) var(--spacing-6);
   box-shadow: var(--box-shadow);
+}
+
+.nav-right-menu{
+  display: flex;
+  align-items: center;
 }
 
 .nav-search-input {

@@ -1,0 +1,37 @@
+---
+---
+
+<div class="dropdown is-right" id="dropdown-user">
+  <div class="dropdown-trigger">
+    <button
+      class="button is-ghost px-0"
+      aria-haspopup="true"
+      aria-controls="dropdown-user"
+      id="dropdown-user-btn"
+    >
+      <figure class="image is-32x32">
+        <img class="is-rounded" src={"/22890128.png"} alt={"User name"} />
+      </figure>
+    </button>
+  </div>
+  <div class="dropdown-menu" role="menu">
+    <div class="dropdown-content">
+      <div class="dropdown-item">
+        <a href="/user" class="dropdown-item">
+          Perfil
+        </a>
+        <hr class="dropdown-divider">
+        <a href="/" class="dropdown-item">
+          Cerrar Sesion
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  import { Dropdown } from "../../helpers/index"
+  const dropdown = new Dropdown();
+
+  dropdown.create("dropdown-user-btn", "dropdown-user");
+</script>
