@@ -15,7 +15,7 @@ export const USER_GENDER = [
         key: "NS",
         label: "Prefiero no decir"
     }
-]
+] as const; // Add 'as const' to preserve the specific string literal types of 'key' property
 
 export const USER_CATEGORIES = [
     {
@@ -66,6 +66,6 @@ export const USER_CATEGORIES = [
         label: 'Organizacion de eventos',
         key: 'OR'
     },
-]
+] as const;
 
 export const USER_MAX_LINKS = 5;

@@ -3,6 +3,7 @@ import MainSite from "../layouts/MainSite.astro";
 import "../styles/signup.scss";
 import UserLinks from "../components/particles/UserLinksEditor.astro";
 import { USER_CATEGORIES, USER_GENDER } from "../constants/user";
+import ImageUploading from "../components/particles/ImageUploading.astro";
 ---
 
 <MainSite>
@@ -11,8 +12,7 @@ import { USER_CATEGORIES, USER_GENDER } from "../constants/user";
     <form action="" id="user-data">
       <div class="columns">
         <div class="column signup-image-container">
-          <img src="/img_avatar2.png" alt="" />
-          <button class="outline-button">Seleccionar Imagen</button>
+          <ImageUploading />
         </div>
 
         <div class="form-container columns">
@@ -106,7 +106,7 @@ import { USER_CATEGORIES, USER_GENDER } from "../constants/user";
     if (isFormValid) {
       // Grab data
       const formData = new FormData(form);
-      const { name, age, gender } = Object.fromEntries(formData);
+      const { name, age, gender, imgLink } = Object.fromEntries(formData);
       const links = Array.from(document.querySelectorAll("[data-link]")).map(
         (link) => ({
           name: decodeURI(link.getAttribute("data-link")),
@@ -117,10 +117,10 @@ import { USER_CATEGORIES, USER_GENDER } from "../constants/user";
       const categories = Array.from(
         form.querySelectorAll<HTMLInputElement>('[type="checkbox"]')
       )
-        .map(({ name, checked }) => checked && { name })
+        .map(({ name, checked }) => checked && name)
         .filter(Boolean);
 
-      console.log({ name, age, gender, links, categories });
+      console.log({ name, age, gender, avatarUrl: imgLink, links, categories });
     }
   });
 </script>
