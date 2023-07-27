@@ -68,4 +68,9 @@ export const USER_CATEGORIES = [
     },
 ] as const;
 
+export const GetCategory = (categoryKey: string) => USER_CATEGORIES.find(({key}) => key === categoryKey);
+export const GetGender = (genderKey: string) => USER_GENDER.find(({key}) => key === genderKey);
+
 export const USER_MAX_LINKS = 5;
+
+export const USER_LOCALSTORAGE = "quesale-user"

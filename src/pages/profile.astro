@@ -1,0 +1,9 @@
+---
+import MainSite from "../layouts/MainSite.astro";
+import "../styles/signup.scss";
+import UserProfile from "../components/UserProfile";
+---
+
+<MainSite>
+  <UserProfile client:only="react"/>
+</MainSite>

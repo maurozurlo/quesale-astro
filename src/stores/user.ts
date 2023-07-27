@@ -1,20 +1,9 @@
 import { atom } from "nanostores";
 import { IUserData } from "../types/user";
 
-export const UserData: IUserData = atom({
-    "name": "Miau",
-    "age": "18",
-    "gender": "M",
-    "avatarUrl": "/uploads/tmpp67mmyiq_23158c9c00.png",
-    "links": [
-        {
-            "name": "Instagram",
-            "url": "https://instagram.com/elmiauro"
-        }
-    ],
-    "categories": ["DZ"]
-})
+export const UserData = atom(null)
 
-export function addNote(note: string) {
-    //notes.set([...notes.get(), note]);
+export function setUser(user: IUserData) {
+    console.log("Setting user in store")
+    UserData.set(user);
 }

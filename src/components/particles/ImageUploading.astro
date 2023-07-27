@@ -12,91 +12,89 @@
     background-color: var(--primary-color);
     width: 0%;
   }
-  #previewImage{
-    max-height: 250px;
-    width: 250px;
-    object-fit: cover;
-  }
 </style>
 
-
 <div class="column signup-image-container">
-    <img id="previewImage" src="/img_avatar2.png" alt="" />
-    <input id="imageInput" type="file" accept="image/*" style="display: none;" />
-    <input type="hidden" value="" name="imgLink">
-    <label for="imageInput" class="outline-button">Seleccionar Imagen</label>
-    <div class="progress-bar">
-      <div class="progress-bar-fill" id="progressBarFill"></div>
-    </div>
+  <img id="previewImage" class="avatar" src="/img_avatar2.png" alt="" />
+  <input id="imageInput" type="file" accept="image/*" style="display: none;" />
+  <input type="hidden" value="" name="imgLink" />
+  <label for="imageInput" class="outline-button">Seleccionar Imagen</label>
+  <div class="progress-bar">
+    <div class="progress-bar-fill" id="progressBarFill"></div>
   </div>
-  
+</div>
 
 <script>
-const DEFAULT_IMAGE = "/img_avatar2.png";
+  const DEFAULT_IMAGE = "/img_avatar2.png";
+  import { serverUrl } from "../../constants/api";
 
-document.addEventListener('DOMContentLoaded', () => {
-  const previewImage = document.getElementById('previewImage') as HTMLImageElement;
-  const imageInput = document.getElementById('imageInput') as HTMLInputElement;
-  const progressBarFill = document.getElementById('progressBarFill');
-  const imgLinkInput = document.querySelector('input[name="imgLink"]') as HTMLInputElement;
+  document.addEventListener("DOMContentLoaded", () => {
+    const previewImage = document.getElementById(
+      "previewImage"
+    ) as HTMLImageElement;
+    const imageInput = document.getElementById(
+      "imageInput"
+    ) as HTMLInputElement;
+    const progressBarFill = document.getElementById("progressBarFill");
+    const imgLinkInput = document.querySelector(
+      'input[name="imgLink"]'
+    ) as HTMLInputElement;
 
+    imageInput.addEventListener("change", async () => {
+      const file = imageInput.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = () => {
+          previewImage.src = reader.result as string;
+        };
+        reader.readAsDataURL(file);
 
-  imageInput.addEventListener('change', async () => {
-    const file = imageInput.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = () => {
-        previewImage.src = reader.result as string;
-      };
-      reader.readAsDataURL(file);
+        // Make the server request to upload the image
+        const formData = new FormData();
+        formData.append("files", file); // 'files' is the field name expected by Strapi
 
-      // Make the server request to upload the image
-      const formData = new FormData();
-      formData.append('files', file); // 'files' is the field name expected by Strapi
+        const xhr = new XMLHttpRequest();
+        xhr.open("POST", serverUrl.concat("/api/upload"), true);
+        //      xhr.setRequestHeader('Authorization', `Bearer ${YOUR_AUTH_TOKEN}`); // Replace YOUR_AUTH_TOKEN with the actual token
 
-      const xhr = new XMLHttpRequest();
-      xhr.open('POST', 'http://localhost:5000/api/upload', true);
-//      xhr.setRequestHeader('Authorization', `Bearer ${YOUR_AUTH_TOKEN}`); // Replace YOUR_AUTH_TOKEN with the actual token
+        xhr.upload.onprogress = (event) => {
+          const progressPercentage = (event.loaded / event.total) * 100;
+          progressBarFill.style.width = `${progressPercentage}%`;
+        };
 
-      xhr.upload.onprogress = (event) => {
-        const progressPercentage = (event.loaded / event.total) * 100;
-        progressBarFill.style.width = `${progressPercentage}%`;
-      };
+        xhr.onload = () => {
+          if (xhr.status === 200) {
+            // Image uploaded successfully
+            const response = JSON.parse(xhr.responseText);
+            const imageUrl = response[0].url; // Extract the URL from the response
+            imgLinkInput.value = imageUrl; // Set the URL as the value of the hidden input
+            console.log("Image uploaded successfully");
+            progressBarFill.style.width = "0%";
+          } else {
+            // Error uploading the image
+            console.error("Error uploading the image");
+            // Reset the input value and display the default image
+            previewImage.src = DEFAULT_IMAGE;
+            imageInput.value = "";
+            imgLinkInput.value = ""; // Clear the hidden input value
+          }
+        };
 
-      xhr.onload = () => {
-        if (xhr.status === 200) {
-          // Image uploaded successfully
-          const response = JSON.parse(xhr.responseText);
-          const imageUrl = response[0].url; // Extract the URL from the response
-          imgLinkInput.value = imageUrl; // Set the URL as the value of the hidden input
-          console.log('Image uploaded successfully');
-          progressBarFill.style.width = '0%';
-        } else {
-          // Error uploading the image
-          console.error('Error uploading the image');
+        xhr.onerror = () => {
+          console.error("Error uploading the image");
+          progressBarFill.style.width = "0%";
           // Reset the input value and display the default image
           previewImage.src = DEFAULT_IMAGE;
-          imageInput.value = '';
-          imgLinkInput.value = ''; // Clear the hidden input value
-        }
-      };
+          imageInput.value = "";
+          imgLinkInput.value = ""; // Clear the hidden input value
+        };
 
-      xhr.onerror = () => {
-        console.error('Error uploading the image');
-        progressBarFill.style.width = '0%';
-        // Reset the input value and display the default image
-        previewImage.src = DEFAULT_IMAGE;
-        imageInput.value = '';
-        imgLinkInput.value = ''; // Clear the hidden input value
-      };
-
-      xhr.send(formData);
-    } else {
-      // No file selected or user canceled the selection
-      // You can handle this case as needed
-      console.error('No file selected');
-    }
+        xhr.send(formData);
+      } else {
+        // No file selected or user canceled the selection
+        // You can handle this case as needed
+        console.error("No file selected");
+      }
+    });
   });
-});
-
 </script>

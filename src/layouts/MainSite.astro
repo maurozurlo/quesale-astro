@@ -3,7 +3,6 @@ import Navbar from '../components/Navbar.astro'
 import 'bulma/css/bulma.min.css';
 import 'bulma-list/css/bulma-list.css'
 import '../styles/globals.scss'
-
 ---
 
 <html lang="en">
@@ -20,7 +19,7 @@ import '../styles/globals.scss'
 	</head>
 	<body>
         
-		<Navbar />        
+		<Navbar/>        
         <section class="section">
         <slot />
         </section>
@@ -38,6 +37,7 @@ import '../styles/globals.scss'
 </html>
 
 <script>
+  import '../init';
   // Import the toast function
   // import {toast} from 'bulma-toast'
   // // Or use

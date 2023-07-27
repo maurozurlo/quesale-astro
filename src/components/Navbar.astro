@@ -2,9 +2,7 @@
 import { Icon } from "astro-icon";
 import logo from "/logo.svg";
 import "./Navbar.scss";
-import Login from '../modals/LoginProviders';
-import UserMenu from './dropdowns/UserMenu.astro';
-const userIsLoggedIn = false;
+import NavRightMenu from './NavRightMenu'
 ---
 
 <header class="nav-header">
@@ -19,6 +17,6 @@ const userIsLoggedIn = false;
     </span>
   </div>
   <div class="nav-right-menu">
-    {userIsLoggedIn ? <UserMenu/> : <Login client:load />}
+    <NavRightMenu client:only="react"/>
   </div>
 </header>
