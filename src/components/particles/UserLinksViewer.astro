@@ -1,0 +1,18 @@
+---
+const { links } = Astro.props;
+---
+
+<div class="list" id="link-list">
+  {
+    links.map((link: { name: string; url: string; }) => (
+      <div class="list-item">
+        <div class="list-item-content">
+          <div class="list-item-title">{link.name}</div>
+          <div class="list-item-description is-flex is-justify-content-space-between">
+            <a href={link.url}>{link.url}</a>
+          </div>
+        </div>
+      </div>
+    ))
+  }
+</div>

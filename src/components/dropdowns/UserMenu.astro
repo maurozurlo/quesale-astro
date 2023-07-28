@@ -1,0 +1,35 @@
+---
+import { serverUrl } from "../../constants/api";
+import { MockUser } from "../../mock/user";
+
+const { avatarUrl, name } = MockUser;
+---
+
+<div class="dropdown is-right" id="dropdown-user" style="none">
+  <div class="dropdown-trigger">
+    <button
+      class="button is-ghost px-0"
+      aria-haspopup="true"
+      aria-controls="dropdown-user"
+      id="dropdown-user-btn"
+    >
+      <figure class="image is-32x32">
+        <img class="is-rounded" src={serverUrl.concat(avatarUrl)} alt={name} />
+      </figure>
+    </button>
+  </div>
+  <div class="dropdown-menu" role="menu">
+    <div class="dropdown-content">
+      <div class="dropdown-item">
+        <a href="/profile" class="dropdown-item"> Perfil</a>
+        <hr class="dropdown-divider" />
+        <a href="/logout" class="dropdown-item"> Cerrar Sesion</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  import { Dropdown } from "../../helpers/index";
+  new Dropdown("dropdown-user-btn", "dropdown-user");
+</script>

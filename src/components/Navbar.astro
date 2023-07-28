@@ -2,7 +2,7 @@
 import { Icon } from "astro-icon";
 import logo from "/logo.svg";
 import "./Navbar.scss";
-import NavRightMenu from './NavRightMenu'
+import NavRightMenu from './NavRightMenu.astro'
 ---
 
 <header class="nav-header">
@@ -17,6 +17,6 @@ import NavRightMenu from './NavRightMenu'
     </span>
   </div>
   <div class="nav-right-menu">
-    <NavRightMenu client:only="react"/>
+    <NavRightMenu/>
   </div>
 </header>

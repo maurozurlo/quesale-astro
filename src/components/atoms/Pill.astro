@@ -1,0 +1,14 @@
+---
+const { color, label } = Astro.props;
+import classnames from "classnames";
+import './Pill.scss'
+---
+
+<span
+    class={classnames({
+        pill: true,
+        [color]: true,
+    })}
+>
+    {label}
+</span>

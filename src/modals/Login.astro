@@ -1,0 +1,38 @@
+---
+import "./Login.scss";
+import { MockUser } from "../mock/user";
+---
+
+<button class="primary-button" id="login-modal-trigger"> Ingresar</button>
+
+<div class="modal" id="login-modal">
+  <div class="modal-background"></div>
+  <div class="modal-content animate">
+    <div class="modal-header">
+      <span></span>
+      <div class="close-modal" data-modal='login-modal'>&times;</div>
+    </div>
+
+    <div class="form-group">
+      <h3>Ingresar con</h3>
+      <button class="facebook-button">Facebook</button>
+      <button class="google-button">Google</button>
+    </div>
+
+    <div class="modal-footer">
+      <button class="outline-button" data-modal='login-modal'>Cancelar</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  const facebookBtn = document.querySelector(".facebook-button").addEventListener('click', () => location.replace('/signup'));
+  const googlBtn = document.querySelector(".google-button").addEventListener('click', () => location.replace('/profile'));
+
+  import { Modal } from "../helpers/toggle";
+
+  const loginModal = new Modal('login-modal-trigger','login-modal')
+
+  Array.from(document.querySelectorAll('[data-modal="login-modal"]')).map(el => el.addEventListener('click', () => loginModal.close()))
+
+</script>
