@@ -1,14 +1,31 @@
 ---
-import starters from '../../public/events.json';
-import './ResponsiveGrid.scss'
-import Card from './Card.astro'
+import "./ResponsiveGrid.scss";
+import Card from "./Card.astro";
+import  qs from 'qs';
+const query = qs.stringify(
+  {
+    fields: ['title', 'slug', 'date', 'location'],
+    populate: {
+      poster: {
+        fields: ['formats'],
+      },
+      categories: {
+        fields: ['name'],
+      },
+    },
+  },
+  {
+    encodeValuesOnly: true,
+  }
+);
+
+import { serverUrl } from "../constants/api";
+const url = serverUrl.concat("/api/events?", query);
+const {data} = await fetch(url)
+  .then((res) => res.json())
+  .then((data) => data);
 ---
 
-
-    <!-- heading text -->
-    <ul class="image-gallery mt-4">
-        {starters.map((starter) => (
-            <Card {...starter} />
-        ))}
-      <!-- other items here -->
-    </ul>
+<ul class="image-gallery mt-4">
+  {data.map((attributes) => <Card {...attributes} />)}
+</ul>

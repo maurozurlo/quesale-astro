@@ -74,3 +74,20 @@ export const GetGender = (genderKey: string) => USER_GENDER.find(({key}) => key 
 export const USER_MAX_LINKS = 5;
 
 export const USER_LOCALSTORAGE = "quesale-user"
+
+export const CategoryColors = {
+    1: "magenta",
+    2: "red",
+    3: "blue",
+    4: "lime",
+    5: "volcano",
+    6: "orange",
+    7: "green",
+    8: "cyan",
+    9: "purple",
+    10: "yellow",
+    11: "pink",
+    12: "teal",
+    13: "brown"
+  };
+  

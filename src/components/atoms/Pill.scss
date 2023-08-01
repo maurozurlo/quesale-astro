@@ -3,6 +3,7 @@
     font-size: 12px;
     white-space: nowrap;
     border-radius: var(--border-radius);
+    border: 1px solid #d9d9d9;
 
     &.magenta {
         color: #c41d7f;
@@ -22,11 +23,10 @@
         border-color: #91d5ff;
     }
 
-    &.lime {
-        border: 1px solid #d9d9d9;
+    &.lime {        
         color: #7cb305;
         background: #fcffe6;
-        border-color: #eaff8f;
+        border-color: #7cb305;
     }
 
     &.volcano {
@@ -34,4 +34,52 @@
         background: #fff2e8;
         border-color: #ffbb96;
     }
+
+    &.orange {
+        color: #e73d09;
+        background: rgb(255, 247, 240);
+        border-color: #fda66d;
+      }
+      
+      &.green {
+        color: #389e0d;
+        background: #f6ffed;
+        border-color: #b7eb8f;
+      }
+      
+      &.cyan {
+        color: #08979c;
+        background: #e6fffb;
+        border-color: #87e8de;
+      }
+      
+      &.purple {
+        color: #531dab;
+        background: #f9f0ff;
+        border-color: #d3adf7;
+      }
+      
+      &.yellow {
+        color: #f09e11;
+        background: #fffbe6;
+        border-color: #ffd666;
+      }
+      
+      &.pink {
+        color: #eb2f96;
+        background: #fff0f6;
+        border-color: #ffadd2;
+      }
+      
+      &.teal {
+        color: #096dd9;
+        background: #e6f7ff;
+        border-color: #91d5ff;
+      }
+      
+      &.brown {
+        color: #8c8c8c;
+        background: #f5f5f5;
+        border-color: #d9d9d9;
+      }
 }

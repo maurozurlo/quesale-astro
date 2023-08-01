@@ -1,36 +1,37 @@
 ---
 import classNames from "classnames";
-import { getRandomInt } from "../utils/math";
 import "./Card.scss";
-import Pill from './atoms/Pill.astro'
+import Pill from "./atoms/Pill.astro";
+import { serverUrl } from "../constants/api";
+import { CategoryColors } from "../constants/user";
+import { formatDate } from "../helpers";
 
-const categories = [
-  { label: "Musica", color: "magenta" },
-  { label: "Poesia", color: "red" },
-  { label: "Teatro", color: "blue" },
-  { label: "Arte", color: "lime" },
-  { label: "Fotografia", color: "volcano" },
-];
+const { attributes, isSmall } = Astro.props;
 
-function getCategories() {
-  // Shuffle array
-  const shuffled = categories.sort(() => 0.5 - Math.random());
-  // Get sub-array of first n elements after shuffled
-  const selected = shuffled.slice(0, getRandomInt(0, categories.length));
-  return selected;
-}
+const { poster, title, location, date, categories = [], slug } = attributes;
 
-const { coverImage, title, location, date, isSmall } = Astro.props;
+const formattedDate = formatDate(new Date(date));
+
+const coverImage = serverUrl.concat(
+  poster?.data?.attributes?.formats?.small?.url
+);
 ---
 
-<li class={classNames({card:true, isSmall})}>
-    <img alt={title} src={coverImage} />
-    
-      <div class="date">{date}</div>
-      <h3>{title}</h3>
-      <div class="location">{location}</div>
+<li class={classNames({ card: true, isSmall })}>
+  <img alt={title} src={coverImage} />
 
-      <div class="pill-container">
-        {getCategories().map(category => <Pill label={category.label} color={category.color}/>)}
-      </div>    
+  <div class="date">{formattedDate}</div>
+  <h3><a href={"/eventos".concat("/", slug)}>{title}</a></h3>
+  <div class="location">{location}</div>
+
+  <div class="pill-container">
+    {
+      categories?.data.map((category) => (
+        <Pill
+          label={category?.attributes?.name}
+          color={CategoryColors[category?.id]}
+        />
+      ))
+    }
+  </div>
 </li>

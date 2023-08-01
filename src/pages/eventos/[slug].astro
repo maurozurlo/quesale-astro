@@ -1,0 +1,34 @@
+---
+import  qs from 'qs';
+import { serverUrl } from "../../constants/api";
+import MainSite from '../../layouts/MainSite.astro'
+
+export function getStaticPaths() {
+  return [
+    {params: {slug: 'EL-CIRCUITO-ESPACIO-ESCENICO'}},
+    {params: {slug: 'rover'}},
+    {params: {slug: 'spot'}},
+  ];
+}
+
+const { slug } = Astro.params;
+
+const query = qs.stringify(
+  {
+    slug
+  },
+  {
+    encodeValuesOnly: true,
+  }
+);
+
+
+const url = serverUrl.concat("/api/events?", query);
+const {data} = await fetch(url)
+  .then((res) => res.json())
+  .then((data) => data);
+
+---
+<MainSite>
+	<div>{JSON.stringify(data)}</div>
+</MainSite>
