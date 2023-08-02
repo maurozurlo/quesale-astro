@@ -10,12 +10,13 @@ import "./event.scss";
 import { getMonth } from "../../helpers";
 import PillContainer from "../../components/particles/PillContainer.astro";
 
-export function getStaticPaths() {
-  return [
-    { params: { slug: "EL-CIRCUITO-ESPACIO-ESCENICO" } },
-    { params: { slug: "rover" } },
-    { params: { slug: "spot" } },
-  ];
+export async function getStaticPaths() {
+  const query = qs.stringify({fields: ["slug"]});
+  const url = serverUrl.concat("/api/events?", query);
+  const { data } = await fetch(url)
+    .then((res) => res.json())
+    .then((data) => data);
+  return data.map(({attributes}) => ({params: {slug: attributes?.slug}}))
 }
 
 const { slug } = Astro.params;
@@ -33,9 +34,9 @@ const query = qs.stringify(
       organizer: {
         fields: ["username"],
       },
-      participants:{
-        fields: ["username"]
-      }
+      participants: {
+        fields: ["username"],
+      },
     },
   },
   {
@@ -60,7 +61,7 @@ const {
     description,
     price,
     organizer,
-    participants = []
+    participants = [],
   },
 } = eventData;
 
@@ -97,7 +98,6 @@ const formattedDescription = sanitize(
           </div>
 
           <div class="event-details px-4">
-            <h1 class="is-size-4 has-text-weight-semibold">{title}</h1>
             <p class="date">
               {
                 eventDate.toLocaleDateString("es-AR", {
@@ -124,8 +124,7 @@ const formattedDescription = sanitize(
 
               <li>
                 <Icon name="map" />
-                <span class="has-text-weight-medium">{location}</span>
-                <a href="#">Ver Mapa</a>
+                <a href="#">{location}</a>
               </li>
 
               <li>
@@ -147,20 +146,33 @@ const formattedDescription = sanitize(
           <PillContainer categories={categories} />
         </div>
 
-        <div class="my-2">
+        <div class="mt-4 mb-2">
           <h6 class="title is-6 mb-2">Participantes</h6>
           <div class="content">
             <ul>
               {
-                participants?.data?.map(participant => 
-                  <li> <a href={"/usuarios/".concat(participant?.attributes?.username)}>{participant?.attributes?.username}</a></li>
-                )
+                participants?.data?.map((participant) => (
+                  <li>
+                    {" "}
+                    <a
+                      href={"/usuarios/".concat(
+                        participant?.attributes?.username
+                      )}
+                    >
+                      {participant?.attributes?.username}
+                    </a>
+                  </li>
+                ))
               }
             </ul>
           </div>
         </div>
       </div>
-      <div class="column card ml-4 content" set:html={formattedDescription} />
+      <div class="column card ml-4">
+        <h1 class="is-size-4 has-text-weight-semibold">{title}</h1>
+        <div class="content" set:html={formattedDescription} />
+      </div>
+      
     </div>
   </div>
 </MainSite>
