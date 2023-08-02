@@ -1,0 +1,24 @@
+---
+const { categories } = Astro.props;
+import { CategoryColors } from "../../constants/user";
+import Pill from "../atoms/Pill.astro";
+---
+
+<div class="pill-container">
+  {
+    categories?.data.map((category) => (
+      <Pill
+        label={category?.attributes?.name}
+        color={CategoryColors[category?.id]}
+      />
+    ))
+  }
+</div>
+
+<style>
+  .pill-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-2);
+  }
+</style>

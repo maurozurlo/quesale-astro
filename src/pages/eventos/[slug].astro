@@ -1,13 +1,20 @@
 ---
-import  qs from 'qs';
+import qs from "qs";
+import { sanitize } from "isomorphic-dompurify";
+import { marked } from "marked";
+import { Icon } from "astro-icon";
 import { serverUrl } from "../../constants/api";
-import MainSite from '../../layouts/MainSite.astro'
+import MainSite from "../../layouts/MainSite.astro";
+import "./event.scss";
+
+import { getMonth } from "../../helpers";
+import PillContainer from "../../components/particles/PillContainer.astro";
 
 export function getStaticPaths() {
   return [
-    {params: {slug: 'EL-CIRCUITO-ESPACIO-ESCENICO'}},
-    {params: {slug: 'rover'}},
-    {params: {slug: 'spot'}},
+    { params: { slug: "EL-CIRCUITO-ESPACIO-ESCENICO" } },
+    { params: { slug: "rover" } },
+    { params: { slug: "spot" } },
   ];
 }
 
@@ -15,20 +22,145 @@ const { slug } = Astro.params;
 
 const query = qs.stringify(
   {
-    slug
+    slug,
+    populate: {
+      poster: {
+        fields: ["formats"],
+      },
+      categories: {
+        fields: ["name"],
+      },
+      organizer: {
+        fields: ["username"],
+      },
+      participants:{
+        fields: ["username"]
+      }
+    },
   },
   {
     encodeValuesOnly: true,
   }
 );
 
-
 const url = serverUrl.concat("/api/events?", query);
-const {data} = await fetch(url)
+const { data } = await fetch(url)
   .then((res) => res.json())
   .then((data) => data);
 
+const eventData = Array.isArray(data) ? data[0] : data;
+
+const {
+  attributes: {
+    poster,
+    title,
+    location,
+    date,
+    categories = [],
+    description,
+    price,
+    organizer,
+    participants = []
+  },
+} = eventData;
+
+const eventDate = new Date(date);
+const coverImage =
+  serverUrl.concat(poster?.data?.attributes?.formats?.small?.url) ?? "";
+
+const formattedDescription = sanitize(
+  marked.parse(description, { mangle: false, headerIds: false })
+);
 ---
+
 <MainSite>
-	<div>{JSON.stringify(data)}</div>
+  <div class="container">
+    <div class="columns">
+      <div class="floating-card column card">
+        <div class="event-poster">
+          <img
+            alt={title}
+            title={title}
+            src={coverImage}
+            class="center-block is-hidden-mobile"
+            width="100%"
+          />
+        </div>
+        <div class="details">
+          <div class="event-calendar">
+            <p class="month">
+              {getMonth(eventDate)}
+            </p>
+            <p class="day">
+              {eventDate.getDate()}
+            </p>
+          </div>
+
+          <div class="event-details px-4">
+            <h1 class="is-size-4 has-text-weight-semibold">{title}</h1>
+            <p class="date">
+              {
+                eventDate.toLocaleDateString("es-AR", {
+                  weekday: "long",
+                  day: "numeric",
+                  month: "long",
+                  hour: "2-digit",
+                  minute: "2-digit",
+                })
+              }
+            </p>
+
+            <ul class="detail-list">
+              <li>
+                <Icon name="ticket" />
+                <span class="has-text-weight-medium">Entrada</span>
+                {
+                  Intl.NumberFormat("es-AR", {
+                    style: "currency",
+                    currency: "ARS",
+                  }).format(price)
+                }
+              </li>
+
+              <li>
+                <Icon name="map" />
+                <span class="has-text-weight-medium">{location}</span>
+                <a href="#">Ver Mapa</a>
+              </li>
+
+              <li>
+                <Icon name="person" />
+                <span class="has-text-weight-medium">Organizado por</span>
+                <a
+                  href={"/usuarios/".concat(
+                    organizer?.data?.attributes?.username
+                  )}
+                >
+                  {organizer?.data?.attributes?.username}</a
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="my-2">
+          <h6 class="title is-6 mb-2">Categorias</h6>
+          <PillContainer categories={categories} />
+        </div>
+
+        <div class="my-2">
+          <h6 class="title is-6 mb-2">Participantes</h6>
+          <div class="content">
+            <ul>
+              {
+                participants?.data?.map(participant => 
+                  <li> <a href={"/usuarios/".concat(participant?.attributes?.username)}>{participant?.attributes?.username}</a></li>
+                )
+              }
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="column card ml-4 content" set:html={formattedDescription} />
+    </div>
+  </div>
 </MainSite>

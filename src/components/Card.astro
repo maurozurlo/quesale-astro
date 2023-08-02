@@ -5,6 +5,7 @@ import Pill from "./atoms/Pill.astro";
 import { serverUrl } from "../constants/api";
 import { CategoryColors } from "../constants/user";
 import { formatDate } from "../helpers";
+import PillContainer from "./particles/PillContainer.astro";
 
 const { attributes, isSmall } = Astro.props;
 
@@ -23,15 +24,5 @@ const coverImage = serverUrl.concat(
   <div class="date">{formattedDate}</div>
   <h3><a href={"/eventos".concat("/", slug)}>{title}</a></h3>
   <div class="location">{location}</div>
-
-  <div class="pill-container">
-    {
-      categories?.data.map((category) => (
-        <Pill
-          label={category?.attributes?.name}
-          color={CategoryColors[category?.id]}
-        />
-      ))
-    }
-  </div>
+  <PillContainer categories={categories} />
 </li>
