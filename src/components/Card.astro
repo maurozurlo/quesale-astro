@@ -9,7 +9,7 @@ import PillContainer from "./particles/PillContainer.astro";
 
 const { attributes, isSmall } = Astro.props;
 
-const { poster, title, location, date, categories = [], slug } = attributes;
+const { poster, title, location, date, categories = {}, slug } = attributes;
 
 const formattedDate = formatDate(new Date(date));
 

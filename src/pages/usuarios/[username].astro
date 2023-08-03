@@ -1,0 +1,79 @@
+---
+import MainSite from "../../layouts/MainSite.astro";
+import "../../styles/signup.scss";
+import UserLinksViewer from "../../components/particles/UserLinksViewer.astro";
+import EventList from "../../components/particles/EventList.astro";
+import starters from "../../../public/events.json";
+import { serverUrl } from "../../constants/api";
+
+import PillContainer from "../../components/particles/PillContainer.astro";
+import { USER_PATHS, USER_QUERY } from "../../constants/queries";
+
+export async function getStaticPaths() {
+  const data = await fetch(USER_PATHS).then((res) => res.json()) ?? []
+  return data.map(({ username }) => ({ params: { username } }));
+}
+
+// Fetch User Data
+const { username } = Astro.params;
+const data = await fetch(USER_QUERY(username))
+  .then((res) => res.json())
+const userData = Array.isArray(data) ? data[0] : data;
+
+const {
+    avatar,
+    fullname,
+    age,
+    gender,
+    categories = [],
+    links = [],
+} = userData;
+
+const avatarImg =
+  serverUrl.concat(avatar?.formats?.medium?.url) ?? "";
+---
+
+<MainSite>
+  <div class="container is-primary-background">
+    <h1 class="is-size-2 has-text-weight-semibold">{username}</h1>
+    <div class="columns">
+      <div class="column signup-image-container px-4">
+        <img src={avatarImg} alt={username} class="avatar" />
+      </div>
+
+      <div class="form-container columns">
+        <div
+          class="column is-half is-flex is-flex-direction-column is-flex-row-gap-2 px-4"
+        >
+          <label for="name">Nombre Completo</label>
+          <h2>{fullname}</h2>
+
+          <label for="name">Edad</label>
+          <h2>{age}</h2>
+
+          <label for="genero">Genero</label>
+          <h2>{gender.name}</h2>
+
+          <label for="categories">Categorias</label>
+
+          <PillContainer categories={{data: categories}} />
+        </div>
+        <div class="column is-half">
+          {links.length ?
+          <label>Links</label>
+          <UserLinksViewer links={links} />
+          : <div/>
+          }
+          
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <h4 class="is-size-4 has-text-weight-semibold">
+        Ultimos Eventos donde participo
+      </h4>
+      <EventList events={starters} />
+    </div>
+  </div>
+</MainSite>

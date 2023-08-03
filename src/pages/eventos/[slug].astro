@@ -1,54 +1,20 @@
 ---
-import qs from "qs";
-import { sanitize } from "isomorphic-dompurify";
-import { marked } from "marked";
 import { Icon } from "astro-icon";
 import { serverUrl } from "../../constants/api";
 import MainSite from "../../layouts/MainSite.astro";
-import "./event.scss";
-
-import { getMonth } from "../../helpers";
+import "../../styles/event.scss";
+import { getMonth, parseMarkdown } from "../../helpers";
 import PillContainer from "../../components/particles/PillContainer.astro";
+import { EVENT_PATHS, EVENT_QUERY } from "../../constants/queries";
 
 export async function getStaticPaths() {
-  const query = qs.stringify({fields: ["slug"]});
-  const url = serverUrl.concat("/api/events?", query);
-  const { data } = await fetch(url)
-    .then((res) => res.json())
-    .then((data) => data);
-  return data.map(({attributes}) => ({params: {slug: attributes?.slug}}))
+  const { data } = await fetch(EVENT_PATHS).then((res) => res.json());
+  return data.map(({ attributes }) => ({ params: { slug: attributes?.slug } }));
 }
 
+// Fetch Single Event Data
 const { slug } = Astro.params;
-
-const query = qs.stringify(
-  {
-    slug,
-    populate: {
-      poster: {
-        fields: ["formats"],
-      },
-      categories: {
-        fields: ["name"],
-      },
-      organizer: {
-        fields: ["username"],
-      },
-      participants: {
-        fields: ["username"],
-      },
-    },
-  },
-  {
-    encodeValuesOnly: true,
-  }
-);
-
-const url = serverUrl.concat("/api/events?", query);
-const { data } = await fetch(url)
-  .then((res) => res.json())
-  .then((data) => data);
-
+const { data } = await fetch(EVENT_QUERY(slug)).then((res) => res.json());
 const eventData = Array.isArray(data) ? data[0] : data;
 
 const {
@@ -57,7 +23,7 @@ const {
     title,
     location,
     date,
-    categories = [],
+    categories = {},
     description,
     price,
     organizer,
@@ -69,9 +35,7 @@ const eventDate = new Date(date);
 const coverImage =
   serverUrl.concat(poster?.data?.attributes?.formats?.small?.url) ?? "";
 
-const formattedDescription = sanitize(
-  marked.parse(description, { mangle: false, headerIds: false })
-);
+const formattedDescription = parseMarkdown(description);
 ---
 
 <MainSite>
@@ -172,7 +136,6 @@ const formattedDescription = sanitize(
         <h1 class="is-size-4 has-text-weight-semibold">{title}</h1>
         <div class="content" set:html={formattedDescription} />
       </div>
-      
     </div>
   </div>
 </MainSite>

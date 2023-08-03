@@ -6,9 +6,9 @@ import Pill from "../atoms/Pill.astro";
 
 <div class="pill-container">
   {
-    categories?.data.map((category) => (
+    categories?.data?.map((category) => (
       <Pill
-        label={category?.attributes?.name}
+        label={category?.attributes?.name ?? category?.name}
         color={CategoryColors[category?.id]}
       />
     ))
